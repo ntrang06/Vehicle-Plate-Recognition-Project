@@ -1,44 +1,35 @@
-# Ứng dụng nhận diện biển số xe 
+# Ứng dụng nhận diện biển số xe
 
 > Sử dụng **YOLOv8n** và **PaddleOCR**, hỗ trợ nhận diện từ Ảnh, Video và Camera trực tiếp.
 
-## Thành Viên Thực Hiện (Project Team)
-
-| STT | Họ và Tên           | Vai trò (Role) |
-|-----|---------------------|----------------|
-| 1   | **Lê Thành Chỉnh**  | Nhóm trưởng   |
-| 2   | **Trần Phát Tài**   | Thành viên    |
-| 3   | **Võ Đoàn Duy Quang** | Thành viên    |
-
-
-##  Tính Năng Nổi Bật
+## Tính Năng Nổi Bật
 
 Ứng dụng cung cấp các chế độ xử lý khác nhau tùy theo nguồn dữ liệu:
 
 ### 1. Chế độ Ảnh Tĩnh (Image Service)
 
-* **Xử lý tức thì:** Nhận diện và đọc biển số ngay lập tức sau khi chọn ảnh.
-* **Tự động lưu:** Vẽ khung, ghi biển số và lưu ngay vào Database.
+- **Xử lý tức thì:** Nhận diện và đọc biển số ngay lập tức sau khi chọn ảnh.
+- **Tự động lưu:** Vẽ khung, ghi biển số và lưu ngay vào Database.
 
 ### 2. Chế độ Video & Camera
 
 **Chọn ảnh tốt nhất:**
-* Ứng dụng **KHÔNG** lưu ảnh tràn lan.
-* Tự động theo dõi xe từ lúc xuất hiện cho đến khi đi khuất.
-* So sánh liên tục và chỉ lưu **duy nhất 1 tấm ảnh rõ nét nhất** của phiên đó.
 
+- Ứng dụng **KHÔNG** lưu ảnh tràn lan.
+- Tự động theo dõi xe từ lúc xuất hiện cho đến khi đi khuất.
+- So sánh liên tục và chỉ lưu **duy nhất 1 tấm ảnh rõ nét nhất** của phiên đó.
 
 **Chống trùng lặp:**
-* Ngăn chặn việc ghi trùng lặp dữ liệu khi xe dừng lâu một chỗ.
-* Chỉ ghi nhận xe đã rời đi hoặc sau một khoảng thời gian chờ.
 
+- Ngăn chặn việc ghi trùng lặp dữ liệu khi xe dừng lâu một chỗ.
+- Chỉ ghi nhận xe đã rời đi hoặc sau một khoảng thời gian chờ.
 
-* **Live Cam:** Hỗ trợ Webcam hoặc IP Camera thời gian thực.
+- **Live Cam:** Hỗ trợ Webcam hoặc IP Camera thời gian thực.
 
 ### 3. Quản Lý Dữ Liệu
 
-* Tự động lưu lịch sử ra/vào vào database, sử dụng **SQLite**.
-* Lưu đường dẫn ảnh bằng chứng kèm thông số độ tin cậy (`conf`).
+- Tự động lưu lịch sử ra/vào vào database, sử dụng **SQLite**.
+- Lưu đường dẫn ảnh bằng chứng kèm thông số độ tin cậy (`conf`).
 
 ---
 
@@ -52,7 +43,7 @@ Tải code về máy và mở Terminal tại thư mục gốc của dự án.
 
 ### Bước 2: Tạo môi trường ảo (Khuyên dùng)
 
-* **Windows:** `python -m venv venv` sau đó `.\venv\Scripts\activate`
+- **Windows:** `python -m venv venv` sau đó `.\venv\Scripts\activate`
 
 ### Bước 3: Cài đặt PyTorch (Bắt buộc chạy trước)
 
@@ -72,7 +63,7 @@ pip install -r requirements.txt
 
 ```
 
-*(Lưu ý thêm: Nếu bạn dùng GPU cho OCR, hãy cài thêm `paddlepaddle-gpu` nha)*
+_(Lưu ý thêm: Nếu bạn dùng GPU cho OCR, hãy cài thêm `paddlepaddle-gpu` nha)_
 
 ---
 
@@ -94,10 +85,10 @@ PROJECT_ROOT/
 ├── core/
 │   ├── detector.py          # Class nhận diện (YOLO + OCR)
 │   ├── plate_model.pt       # File Model YOLOv8n
-│   └── services/            
-│       ├── image_service.py # Xử lý ảnh 
-│       ├── video_service.py # Xử lý Video 
-│       └── cam_service.py   # Xử lý Camera 
+│   └── services/
+│       ├── image_service.py # Xử lý ảnh
+│       ├── video_service.py # Xử lý Video
+│       └── cam_service.py   # Xử lý Camera
 ├── database/
 │   ├── db_manager.py        # Quản lý kết nối SQLite
 │   └── plates.db            # File dữ liệu
@@ -108,3 +99,4 @@ PROJECT_ROOT/
 └── README.md                # Tài liệu hướng dẫn
 
 ---
+```
