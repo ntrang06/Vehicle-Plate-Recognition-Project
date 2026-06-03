@@ -129,7 +129,7 @@ class LicensePlateApp(ctk.CTk):
         ctk.CTkLabel(res_frame, text="BIỂN SỐ NHẬN DIỆN", font=ctk.CTkFont(size=11), text_color="gray").pack(pady=(15,5))
         
         self.lbl_result = ctk.CTkLabel(res_frame, text="---", 
-                                       font=ctk.CTkFont(family="Consolas", size=32, weight="bold"), 
+                                       font=ctk.CTkFont(family="Consolas", size=20, weight="bold"), 
                                        text_color=self.color_accent)
         self.lbl_result.pack(expand=True)
 
@@ -162,10 +162,20 @@ class LicensePlateApp(ctk.CTk):
             try:
                 processed_img, result = self.image_service.process_image(path)
                 if processed_img is not None:
-                    text = result['text'] if result and result.get('has_plate') else "NO PLATE"
-                    self.lbl_result.configure(text=text)
+                    # SỬA LOGIC: Duyệt qua danh sách để lấy toàn bộ biển số xe
+                    text_display = "NO PLATE"
+                    if isinstance(result, list) and len(result) > 0:
+                        all_texts = [res['text'] for res in result if res.get('has_plate')]
+                        if all_texts:
+                            text_display = "\n".join(all_texts) # Nối các biển số bằng dấu xuống dòng
+                    
+                    # Hiển thị danh sách chữ lên ô màu đen
+                    self.lbl_result.configure(text=text_display)
+                    
+                    # Gọi đúng hàm hiển thị ảnh gốc của bạn
                     self.show_frame(processed_img)
-                    print(f" Xử lý ảnh xong: {text}")
+                    
+                    print(f" Xử lý ảnh xong:\n{text_display}")
             except Exception as e:
                 print(f"Lỗi ảnh: {e}")
 
@@ -219,11 +229,26 @@ class LicensePlateApp(ctk.CTk):
                 frame, result = data
                 
                 # log ra terminal
-                if result and result.get('has_plate'):
-                    text = result['text']
-                    conf = result['conf']
-                    self.lbl_result.configure(text=text)
-                    
+                if isinstance(result, list):
+                    if len(result) > 0:
+                        all_texts = []
+                        for res in result:
+                            if res.get('has_plate'):
+                                all_texts.append(res['text'])
+                                # Log từng biển số ra terminal
+                                print(f"\033[92m[FPS: {int(fps)}] DETECTED: {res['text']} | Conf: {res['conf']}\033[0m")
+                        
+                        if all_texts:
+                            self.lbl_result.configure(text="\n".join(all_texts))
+                        else:
+                            self.lbl_result.configure(text="---")
+                    else:
+                        self.lbl_result.configure(text="---")
+                else:
+                    # Hỗ trợ dự phòng nếu kết quả trả về dạng dict cũ
+                    if result and result.get('has_plate'):
+                        text = result['text']
+                        self.lbl_result.configure(text=text)                   
                     # Log màu xanh rờn cho nó ngầu
                     print(f"\033[92m[FPS: {int(fps)}] DETECTED: {text} | Conf: {conf}\033[0m")
             else:
