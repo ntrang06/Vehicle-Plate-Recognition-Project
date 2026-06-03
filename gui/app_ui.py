@@ -150,7 +150,8 @@ class LicensePlateApp(ctk.CTk):
 
         self.video_display = ctk.CTkLabel(self.video_container, text="SẴN SÀNG HOẠT ĐỘNG\nVui lòng chọn nguồn dữ liệu", 
                                           font=ctk.CTkFont(size=16), text_color="gray")
-        self.video_display.grid(row=0, column=0, sticky="nsew", padx=2, pady=2)
+        self.video_display.grid(row=0, column=0, padx=2, pady=2)
+        self.video_container.grid_propagate(False)
 
     
     # Xử lý sự kiện
@@ -261,14 +262,16 @@ class LicensePlateApp(ctk.CTk):
     def show_frame(self, cv_img):
         if cv_img is None: return
         
-        h_disp = self.video_container.winfo_height()
-        w_disp = self.video_container.winfo_width()
-        if h_disp < 100: h_disp, w_disp = 600, 800 
+        # Cố định kích thước vùng hiển thị mong muốn
+        w_disp = 850
+        h_disp = 600
         
+        # Tính toán tỷ lệ để ảnh thu nhỏ lại mà không mất góc hay méo hình
         h_img, w_img = cv_img.shape[:2]
         ratio = min(w_disp/w_img, h_disp/h_img)
         new_w, new_h = int(w_img * ratio), int(h_img * ratio)
         
+        # Thực hiện co giãn ảnh bằng OpenCV và nạp vào CustomTkinter
         img_rgb = cv2.cvtColor(cv2.resize(cv_img, (new_w, new_h)), cv2.COLOR_BGR2RGB)
         ctk_img = ctk.CTkImage(Image.fromarray(img_rgb), size=(new_w, new_h))
         
